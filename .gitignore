@@ -1,0 +1,15 @@
+### Intellij ###
+.idea/
+*.iml
+*.ipr
+
+### VSCode ###
+.vscode/
+
+### react ###
+.DS_*
+logs
+**/*.backup.*
+**/*.back.*
+node_modules
+build

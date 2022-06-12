@@ -1,0 +1,37 @@
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-Light.ttf') format('truetype');
+  src: url('./assets/fonts/Montserrat-Light.eot') format('embedded-opentype');
+  src: url('./assets/fonts/Montserrat-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-Regular.ttf') format('truetype');
+  src: url('./assets/fonts/Montserrat-Regular.eot') format('embedded-opentype');
+  src: url('./assets/fonts/Montserrat-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-Bold.ttf') format('truetype');
+  src: url('./assets/fonts/Montserrat-Bold.eot') format('embedded-opentype');
+  src: url('./assets/fonts/Montserrat-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  color: #000840; //NightSky
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+}
