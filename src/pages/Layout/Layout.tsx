@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
 import { Box, Divider, IconButton, Toolbar } from "@mui/material";
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import ListAltIcon from '@mui/icons-material/ListAlt';
@@ -6,9 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from "@mui/icons-material/Menu";
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
-import useUser from "../../hooks/useUser";
 import { logout, setToken } from "../../includes/auth";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import { currentUserState } from "../../stores/store";
 
 export const Layout: React.FC = ({
@@ -55,7 +54,7 @@ export const Layout: React.FC = ({
         )}
       </SideNav>
 
-      <Box component="main" sx={{ flexGrow: 1 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Box>
           {children}

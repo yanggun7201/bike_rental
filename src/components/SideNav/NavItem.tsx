@@ -1,12 +1,6 @@
 import * as React from "react";
-import { MouseEventHandler, ReactNode } from "react";
-import {
-  useTheme,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  SvgIconProps
-} from "@mui/material";
+import { ReactNode } from "react";
+import { ListItem, ListItemIcon, ListItemText, SvgIconProps, useTheme } from "@mui/material";
 import { MuiLink } from "../MuiLink";
 import { NOOP } from "../../includes/constants";
 
@@ -14,6 +8,7 @@ type Props = {
   icon: React.ReactElement<SvgIconProps>,
   to: string,
   children: ReactNode,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick?: (event: any) => void
 }
 

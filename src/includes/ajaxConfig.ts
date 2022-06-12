@@ -8,6 +8,7 @@ axios.defaults.baseURL = API_BASE;
 let setAuthErrorHandler = false;
 
 interface InitAxiosProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errorHandler: (error: any) => any;
 }
 
@@ -19,12 +20,11 @@ export const initAxios = ({
   }
   setAuthErrorHandler = true;
 
-  console.log('"initAxios()"', "initAxios()");
-
   // Add a request interceptor
   axios.interceptors.request.use((config) => {
     const token = getToken();
     if (token) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       config.headers!.Authorization = `Bearer ${token}`;
     }
 

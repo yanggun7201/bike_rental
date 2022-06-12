@@ -1,0 +1,1 @@
+export { withStyle } from './styles';
