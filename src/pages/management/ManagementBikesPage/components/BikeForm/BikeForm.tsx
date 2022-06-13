@@ -1,16 +1,45 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import moment from "moment";
+import { isEmpty, trim } from "lodash";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
-import { ReadOnlyTextField } from "../../../../../components/ReadOnlyTextField";
-import { CenteredRating } from "../../../../../components/CenteredRating";
+import { useSnackbarMessage } from "../../../../../hooks/useSnackbarMessage";
 import { Bike, EMPTY_BIKE } from "../../../../../types/Bike";
 import { Actions } from "../../../../../types/Actions";
+import { CenteredRating } from "../../../../../components/CenteredRating";
+import { ReadOnlyTextField } from "../../../../../components/ReadOnlyTextField";
 import { LabelledTextField } from "../../../../../components/LabelledTextField";
-import { useSnackbarMessage } from "../../../../../hooks/useSnackbarMessage";
-import moment from "moment";
+import { SimpleUL } from "../../../../../components/SimpleUL";
+
+
+type InputBikeError = {
+  email?: string,
+  name?: string,
+  role?: string,
+  password?: string;
+  passwordConfirmation?: string;
+}
+
+const validateBike = (bike: Bike): InputBikeError => {
+  const errors: InputBikeError = {};
+
+  if (isEmpty(trim(bike.model))) {
+    errors.email = "Model is required";
+  }
+  if (isEmpty(trim(bike.color))) {
+    errors.name = "Color is required";
+  }
+  if (isEmpty(trim(bike.location))) {
+    errors.role = "Location is required";
+  }
+
+  return errors;
+};
+
+
 
 interface Props {
   bike: Bike | null,
@@ -50,14 +79,20 @@ export const BikeForm: React.FC<Props> = ({
     });
   }, [targetBike]);
 
-  const handleSaveBike = useCallback((event) => {
-    event.preventDefault();
+  const handleSaveBike = useCallback(() => {
+
+    const errors = validateBike(targetBike);
+
+    if (!isEmpty(errors)) {
+      const errorMessage = Object.values(errors).map(error => (<li key={error}>{error}</li>));
+      showSnackMessage({ type: "error", title: "Validation Error", body: <SimpleUL>{errorMessage}</SimpleUL> });
+      return;
+    }
+
     onAction(targetBike, targetBike.id > 0 ? Actions.UPDATE : Actions.CREATE);
   }, [targetBike]);
 
-  const handleDeleteBike = useCallback((event) => {
-    event.preventDefault();
-
+  const handleDeleteBike = useCallback(() => {
     if (hasFutureReservations(targetBike)) {
       showSnackMessage({ type: "error", title: "Delete Error", body: "There are some future reservations!" });
       return;

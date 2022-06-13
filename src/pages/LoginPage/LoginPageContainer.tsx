@@ -5,6 +5,7 @@ import { currentUserState } from "../../stores/store";
 import { getToken, login } from "../../includes/auth";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
 import { LoginPage } from "./LoginPage";
+import { PageTitle } from "../../components/PageTitle";
 
 export const LoginPageContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -38,5 +39,10 @@ export const LoginPageContainer: React.FC = () => {
     }
   }, [navigate, getToken]);
 
-  return <LoginPage onSubmit={handleLogin} />;
-};
+  return (
+    <>
+      <PageTitle>Login</PageTitle>
+      <LoginPage onSubmit={handleLogin} />;
+    </>
+  );
+}

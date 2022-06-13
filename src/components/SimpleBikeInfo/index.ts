@@ -1,0 +1,1 @@
+export { SimpleBikeInfo } from "./SimpleBikeInfo";

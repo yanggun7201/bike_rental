@@ -13,7 +13,6 @@ import { Reservations } from "./components/Reservations";
 import { isEmpty } from "lodash";
 import useUser from "../../hooks/useUser";
 import { RatingAction } from "./components/RateAction";
-import { Loading } from "../../components/Loading";
 
 interface Props {
   bike: Bike;
@@ -34,7 +33,7 @@ export const BikeDetailsPage: React.FC<Props> = ({
   cancelReservation,
   cancelReservationLoading,
 }) => {
-  const { user, loading: userLoading } = useUser();
+  const { user } = useUser();
   const [reserveDate, setReserveDate] = useState<Date | null>(new Date());
   const [rating, setRating] = useState<number | null>(null);
   const [periodOfTime, setPeriodOfTime] = useState<string | null>(null);
@@ -62,7 +61,7 @@ export const BikeDetailsPage: React.FC<Props> = ({
         fromTime: splitPeriodOfTime[0].trim(),
         toTime: splitPeriodOfTime[1].trim(),
       }
-    });
+    }).then(() => setPeriodOfTime(null));
   }, [bike, reserveBike, reserveDate, periodOfTime]);
 
   const periodOfTimes = useMemo(() => {

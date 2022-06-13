@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { currentUserState } from "../stores/store";
 import { getUserFromStorage } from "../includes/auth";
 
 const useUser = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const setCurrentUserState = useSetRecoilState(currentUserState);
-  const user = getUserFromStorage();
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const userFromStorage = getUserFromStorage();
 
   useEffect(() => {
-    if (user) {
-      setCurrentUserState(user);
+    if (!loading) {
+      return;
+    }
+
+    if (userFromStorage) {
+      setCurrentUser(userFromStorage);
     }
     setLoading(false);
-  }, [user, setCurrentUserState]);
+  }, [loading, userFromStorage, setCurrentUser]);
 
   return {
-    user,
+    user: currentUser,
     loading,
   };
 }

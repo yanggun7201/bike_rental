@@ -9,6 +9,7 @@ export interface Bike {
   ratingAverage: number;
   active: boolean;
   reservations?: Reservation[];
+  reservationWithUsers?: Reservation[];
   ratings?: Rating[];
 }
 

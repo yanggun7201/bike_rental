@@ -1,13 +1,14 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { AxiosPromise } from "axios";
-import { Divider, Rating, Stack, Typography } from "@mui/material";
+import { Rating } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { LoadingButton } from "@mui/lab";
-import SendIcon from '@mui/icons-material/Send';
-import { Bike,  EMPTY_BIKE } from "../../../types/Bike";
+import { Bike, EMPTY_BIKE } from "../../../types/Bike";
 import { Actions } from "../../../types/Actions";
 import { MuiLink } from "../../../components/MuiLink";
 import { BikeForm } from "./components/BikeForm";
+import { isEmpty } from "lodash";
+import { BikeReservations } from "./components/BikeReservations";
+import { BikeActions } from "./components/BikeActions";
 
 interface Props {
   bikes: Bike[],
@@ -30,29 +31,39 @@ export const ManagementBikesPage: React.FC<Props> = ({
   createBike,
   createBikeLoading,
 }) => {
-  const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
+  const [selectedBikeForUpdate, setSelectedBikeForUpdate] = useState<Bike | null>(null);
+  const [selectedBikeForReservations, setSelectedBikeForReservations] = useState<Bike | null>(null);
 
   const handleCancelForm = useCallback(() => {
-    setSelectedBike(null);
+    setSelectedBikeForUpdate(null);
   }, []);
 
   const handleSelectBike = useCallback((event, bike) => {
     event.preventDefault();
-    setSelectedBike(bike);
+    setSelectedBikeForUpdate(bike);
   }, []);
 
   const handleCreateBikeClicked = useCallback(() => {
-    setSelectedBike(EMPTY_BIKE);
+    setSelectedBikeForUpdate(EMPTY_BIKE);
+  }, []);
+
+  const handleSelectBikeForReservations = useCallback((event, bike) => {
+    event.preventDefault();
+    setSelectedBikeForReservations(bike);
+  }, []);
+
+  const handleCloseReservationsDialog = useCallback(() => {
+    setSelectedBikeForReservations(null);
   }, []);
 
   const handleUpdateBike = useCallback((bike, action: Actions) => {
     switch (action) {
       case Actions.CREATE:
-        return createBike(bike).then(() => setSelectedBike(null));
+        return createBike(bike).then(() => setSelectedBikeForUpdate(null));
       case Actions.UPDATE:
         return updateBike(bike, bike.id);
       case Actions.DELETE:
-        return deleteBike(bike, bike.id).then(() => setSelectedBike(null));
+        return deleteBike(bike, bike.id).then(() => setSelectedBikeForUpdate(null));
     }
   }, [updateBike, deleteBike, createBike]);
 
@@ -90,16 +101,34 @@ export const ManagementBikesPage: React.FC<Props> = ({
           <Rating name="disabled" value={value} readOnly />
         ),
       },
+      {
+        field: 'id',
+        headerName: 'Reservations',
+        width: 200,
+        renderCell: (params: GridRenderCellParams): ReactNode => {
+          if (isEmpty(params.row.reservationWithUsers)) {
+            return "";
+          }
+
+          return (
+            <MuiLink
+              to={`/`}
+              underline={"hover"}
+              onClick={(event) => handleSelectBikeForReservations(event, params.row)}
+            >
+              View
+            </MuiLink>
+          )
+        },
+      },
     ];
   }, [handleSelectBike]);
 
-  console.log('bikes', bikes);
-
   return (
     <>
-      {selectedBike && (
+      {selectedBikeForUpdate && (
         <BikeForm
-          bike={selectedBike}
+          bike={selectedBikeForUpdate}
           onAction={handleUpdateBike}
           onCancelForm={handleCancelForm}
           updateBikeLoading={updateBikeLoading}
@@ -108,25 +137,12 @@ export const ManagementBikesPage: React.FC<Props> = ({
         />
       )}
 
-      <Stack
-        alignItems={"center"}
-        direction={"row"}
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={2}
-        sx={{ mt: 3, mb: 3 }}
-      >
-        <Typography variant="h6" sx={{ minWidth: 70 }}>Actions</Typography>
-        <LoadingButton
-          size="small"
-          variant="contained"
-          onClick={handleCreateBikeClicked}
-          loading={loading}
-          loadingPosition="start"
-          startIcon={<SendIcon />}
-        >
-          Create new bike
-        </LoadingButton>
-      </Stack>
+      {selectedBikeForReservations && (
+        <BikeReservations bike={selectedBikeForReservations} onClose={handleCloseReservationsDialog} />
+      )}
+
+      <BikeActions onClickCreateBike={handleCreateBikeClicked} loading={loading} />
+
 
       <div style={{ height: 640, width: '100%' }}>
         <DataGrid

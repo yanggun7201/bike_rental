@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
 import { Box, Divider, IconButton, Toolbar } from "@mui/material";
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from "@mui/icons-material/Menu";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -47,7 +46,7 @@ export const Layout: React.FC = ({
 
       <SideNav openSideNav={openSideNav}>
         <NavItem icon={<DirectionsBikeIcon />} to={"/bikes"}>Bikes</NavItem>
-        <NavItem icon={<ListAltIcon />} to={"/reservations"}>Reservations</NavItem>
+        {/*<NavItem icon={<ListAltIcon />} to={"/reservations"}>Reservations</NavItem>*/}
         {user && (<Divider />)}
         {(user && user.role === UserRole.MANAGER) && (
           <NavItem icon={<ManageAccountsIcon />} to={"/admin"}>Management</NavItem>

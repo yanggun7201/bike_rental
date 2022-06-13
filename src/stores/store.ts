@@ -1,10 +1,5 @@
 import { atom } from "recoil";
-
-export interface User {
-  name: string;
-  email: string;
-  role: string;
-}
+import { User } from "../types/User";
 
 const DEFAULT_USER: User | null = null;
 
