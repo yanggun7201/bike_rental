@@ -1,21 +1,22 @@
-import React, { useCallback, useState } from "react";
-import { useRecoilState } from "recoil";
+import React, { useCallback, useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { Box, Divider, IconButton, Toolbar } from "@mui/material";
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from "@mui/icons-material/Menu";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PeopleIcon from '@mui/icons-material/People';
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
 import { logout, setToken } from "../../includes/auth";
 import { currentUserState } from "../../stores/store";
 import { UserRole } from "../../types/UserRole";
+import { useNavigate } from "react-router-dom";
 
-export const Layout: React.FC = ({
+export const ManagementLayout: React.FC = ({
   children
 }) => {
-  const [user, setCurrentUserState] = useRecoilState(currentUserState);
+  const setCurrentUserState = useSetRecoilState(currentUserState);
   const [openSideNav, setOpenSideNav] = useState(true);
 
   const toggleDrawer = useCallback(() => {
@@ -46,13 +47,10 @@ export const Layout: React.FC = ({
       </Header>
 
       <SideNav openSideNav={openSideNav}>
-        <NavItem icon={<DirectionsBikeIcon />} to={"/bikes"}>Bikes</NavItem>
-        <NavItem icon={<ListAltIcon />} to={"/reservations"}>Reservations</NavItem>
-        {user && (<Divider />)}
-        {(user && user.role === UserRole.MANAGER) && (
-          <NavItem icon={<ManageAccountsIcon />} to={"/admin"}>Management</NavItem>
-        )}
-        {user && (<NavItem icon={<LogoutIcon />} to={"/logout"} onClick={handleLogout}>Logout</NavItem>)}
+        <NavItem icon={<DirectionsBikeIcon />} to={"bikes"}>Bikes</NavItem>
+        <NavItem icon={<PeopleIcon />} to={"users"}>Users/Managers</NavItem>
+        <Divider />
+        <NavItem icon={<LogoutIcon />} to={"/logout"} onClick={handleLogout}>Logout</NavItem>
       </SideNav>
 
       <Box component="main" sx={{ flexGrow: 1, p: 3, position: "relative" }}>

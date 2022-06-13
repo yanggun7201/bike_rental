@@ -1,0 +1,1 @@
+export { CenteredRating } from "./CenteredRating";

@@ -12,6 +12,15 @@ export interface Bike {
   ratings?: Rating[];
 }
 
+export const EMPTY_BIKE: Bike = {
+  id: -1,
+  model: "",
+  color: "",
+  location: "",
+  ratingAverage: 0,
+  active: true,
+}
+
 export type BikeFilters = {
   models: string [],
   colors: string [],

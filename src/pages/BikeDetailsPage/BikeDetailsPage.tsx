@@ -6,13 +6,14 @@ import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
 import { getPeriodOfTimes } from "../../includes/periodOfTimes";
 import { DATE_FORMAT } from "../../includes/constants";
 import { UseAxiosActionType } from "../../types/UseAxios";
-import { StyledRating } from "./components/StyledRating";
-import { BikeDetailsTextField } from "./components/BikeDetailsTextField";
+import { CenteredRating } from "../../components/CenteredRating";
+import { ReadOnlyTextField } from "../../components/ReadOnlyTextField";
 import { ReserveAction } from "./components/ReserveAction";
 import { Reservations } from "./components/Reservations";
 import { isEmpty } from "lodash";
 import useUser from "../../hooks/useUser";
 import { RatingAction } from "./components/RateAction";
+import { Loading } from "../../components/Loading";
 
 interface Props {
   bike: Bike;
@@ -33,7 +34,7 @@ export const BikeDetailsPage: React.FC<Props> = ({
   cancelReservation,
   cancelReservationLoading,
 }) => {
-  const user = useUser();
+  const { user, loading: userLoading } = useUser();
   const [reserveDate, setReserveDate] = useState<Date | null>(new Date());
   const [rating, setRating] = useState<number | null>(null);
   const [periodOfTime, setPeriodOfTime] = useState<string | null>(null);
@@ -122,12 +123,12 @@ export const BikeDetailsPage: React.FC<Props> = ({
           flexDirection: 'column',
         }}
       >
-        <BikeDetailsTextField id="model" label="Bike Model" name="model" value={bike.model} />
-        <BikeDetailsTextField id="color" label="Bike Color" name="color" value={bike.color} />
-        <BikeDetailsTextField id="location" label="Bike Location" name="location" value={bike.location} />
+        <ReadOnlyTextField id="model" label="Bike Model" name="model" value={bike.model} />
+        <ReadOnlyTextField id="color" label="Bike Color" name="color" value={bike.color} />
+        <ReadOnlyTextField id="location" label="Bike Location" name="location" value={bike.location} />
         <Box sx={{ position: "relative", width: "100%" }}>
-          <BikeDetailsTextField id="ratingAverage" label="Bike Rating Average" name="ratingAverage" value={" "} />
-          <StyledRating name="ratingAverage" value={bike.ratingAverage} readOnly />
+          <ReadOnlyTextField id="ratingAverage" label="Bike Rating Average" name="ratingAverage" value={" "} />
+          <CenteredRating name="ratingAverage" value={bike.ratingAverage} readOnly />
         </Box>
       </Box>
 

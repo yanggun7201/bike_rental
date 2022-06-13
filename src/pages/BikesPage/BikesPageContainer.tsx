@@ -6,7 +6,6 @@ import { DefaultBikeFilters } from "../../types/Bike";
 import moment from "moment";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
 import { PageTitle } from "../../components/PageTitle";
-import { getErrorMessage } from "../../includes/errorMessage";
 
 export const BikesPageContainer: React.FC = () => {
   const [{ data: filtersData }, getBikeFilters] = useBikeFiltersData();
@@ -59,12 +58,6 @@ export const BikesPageContainer: React.FC = () => {
 
     getBikes(config);
   }, [getBikes, fromDate, toDate]);
-
-  useEffect(() => {
-    if (error) {
-      showSnackMessage({ type: "error", title: getErrorMessage(error) });
-    }
-  }, [error]);
 
   useEffect(() => {
     getBikeFilters();

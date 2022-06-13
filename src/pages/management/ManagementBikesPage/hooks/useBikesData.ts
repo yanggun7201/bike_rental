@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from "react";
 import useAxios from "axios-hooks";
-import { UseAxiosResultType } from "../../../types/UseAxios";
-import { getErrorMessage } from "../../../includes/errorMessage";
-import { useSnackbarMessage } from "../../../hooks/useSnackbarMessage";
+import { UseAxiosResultType } from "../../../../types/UseAxios";
+import { getErrorMessage } from "../../../../includes/errorMessage";
+import { useSnackbarMessage } from "../../../../hooks/useSnackbarMessage";
 
 const useBikesData = (): UseAxiosResultType => {
   const { showSnackMessage } = useSnackbarMessage();
@@ -12,17 +12,17 @@ const useBikesData = (): UseAxiosResultType => {
     { manual: true },
   );
 
-  const getBikes = useCallback((config) => {
-    return getData({
-      url: `/bikerental/bikes?includes=ratings,reservations,historyReservations,reservationWithUsers&${config?.params}`
-    });
-  }, [getData]);
-
   useEffect(() => {
     if (error) {
       showSnackMessage({ type: "error", title: getErrorMessage(error) });
     }
   }, [error]);
+
+  const getBikes = useCallback((config) => {
+    return getData({
+      url: `/bikerental-admin/bikes?includes=ratings,reservations,historyReservations,reservationWithUsers&${config?.params}`
+    });
+  }, [getData]);
 
   return [
     {

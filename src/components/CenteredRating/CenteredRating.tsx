@@ -1,7 +1,7 @@
 import { styled } from "@mui/styles";
 import { Rating } from "@mui/material";
 
-export const StyledRating = styled(Rating)(() => ({
+export const CenteredRating = styled(Rating)(() => ({
   "&.MuiRating-root": {
     top: "calc(50% + 4px)",
     position: "absolute",

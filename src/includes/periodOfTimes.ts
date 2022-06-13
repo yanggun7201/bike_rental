@@ -38,6 +38,7 @@ export const getPeriodOfTimes = (reservations: Reservation[] = [], reserveDate: 
   const periodOfTimes = [];
   for (let h = (currentHour); h < 24; h++) {
     const fromTime = padStart(h.toString(), 2, "0");
+
     if (!alreadyReservedTime.has(fromTime)) {
       const endTime = padStart((h + 1).toString(), 2, "0");
       periodOfTimes.push(`${fromTime}:00 ~ ${endTime}:00`);

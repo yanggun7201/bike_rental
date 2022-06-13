@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { toInteger } from "lodash";
 import { getNowSeconds } from "./numbers";
 
-const User_KEY = "bike_rental_user";
+const USER_KEY = "bike_rental_user";
 const TOKEN_KEY = "bike_rental_token";
 
 export const getToken = () => {
@@ -31,7 +31,7 @@ export const setToken = (token) => {
 }
 
 export const getUserFromStorage = () => {
-  const user = localStorage.getItem(User_KEY);
+  const user = localStorage.getItem(USER_KEY);
   if (user) {
     return JSON.parse(user);
   }
@@ -40,9 +40,9 @@ export const getUserFromStorage = () => {
 
 export const setUserToStorage = (user) => {
   if (user) {
-    localStorage.setItem(User_KEY, JSON.stringify(user));
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   } else {
-    localStorage.setItem(User_KEY, user);
+    localStorage.setItem(USER_KEY, user);
   }
 }
 

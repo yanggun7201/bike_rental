@@ -10,6 +10,9 @@ import { LoginPage } from "./pages/LoginPage";
 import { NotFound } from "./pages/NotFound";
 import { BikesPage } from "./pages/BikesPage";
 import { BikeDetailsPage } from "./pages/BikeDetailsPage";
+import { ManagementLayout } from "./pages/ManagementLayout";
+import { ManagementBikesPage } from "./pages/management/ManagementBikesPage";
+import { ManagementUsersPage } from "./pages/management/ManagementUsersPage";
 
 function App(): ReactElement {
 
@@ -26,6 +29,14 @@ function App(): ReactElement {
           <Route path="bikes" element={<BikesPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+
+        <Route path="/admin" element={<ManagementLayout />}>
+          <Route index element={<ManagementBikesPage />} />
+          <Route path={"bikes"} element={<ManagementBikesPage />} />
+          <Route path={"users"} element={<ManagementUsersPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+
       </Routes>
     </LocalizationProvider>
   );
