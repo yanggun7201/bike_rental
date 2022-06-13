@@ -1,5 +1,7 @@
 import React, { ReactElement } from "react";
 import { Route, Routes } from "react-router-dom";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import useAxiosAuth from "./hooks/useAxiosAuth";
 import useUser from "./hooks/useUser";
 import { Layout } from "./pages/Layout";
@@ -14,14 +16,17 @@ function App(): ReactElement {
   useAxiosAuth();
 
   return (
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<HomePage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="bikes" element={<BikesPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="bikes" element={<BikesPage />} />
+          <Route path="bikes/{bikeId}" element={<BikeDetailsPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </LocalizationProvider>
   );
 }
 

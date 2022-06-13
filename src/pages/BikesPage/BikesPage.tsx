@@ -1,12 +1,16 @@
 import React, { ReactNode, useMemo } from "react";
-import { Divider, MenuItem, Rating, Stack } from "@mui/material";
+import { isEmpty } from "lodash";
+import { Divider, MenuItem, Rating, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { LoadingButton } from "@mui/lab";
+import SendIcon from '@mui/icons-material/Send';
 import { Bike, BikeFilters, DefaultBikeFilters } from "../../types/Bike";
 import { PageTitle } from "../../components/PageTitle";
 import { MuiLink } from "../../components/MuiLink";
 import { SelectBox } from "../../components/SelectBox";
 import useBikeFilter from "./hooks/useBikeFilter";
-import { isEmpty } from "lodash";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import moment from "moment";
 
 const columns: GridColDef[] = [
   {
@@ -41,20 +45,45 @@ function isAvailableFilter(filter: string | number): boolean {
   return !isEmpty(filter) && filter !== "all";
 }
 
-function filter(bikes: Bike[], getValue: (bike: Bike) => string | number, filterValue: string | number): Bike[] {
-  return bikes.filter(item => getValue(item) === filterValue);
+type FilterOperator = (value1: string | number, value2: string | number) => boolean;
+
+const equalFilterOperator: FilterOperator = (value1, value2) => {
+  return value1 === value2;
+}
+
+const equalOrGreaterFilterOperator: FilterOperator = (value1, value2) => {
+  return value1 >= value2;
+}
+
+function filter(
+  bikes: Bike[],
+  getValue: (bike: Bike) => string | number,
+  filterValue: string | number,
+  filterOperator: FilterOperator,
+): Bike[] {
+  return bikes.filter(item => filterOperator(getValue(item), filterValue));
 }
 
 interface Props {
   bikes: Bike[],
   loading: boolean,
   filters: BikeFilters,
+  onSearch: () => void;
+  setFromDate: (date: Date | null) => void;
+  setToDate: (date: Date | null) => void;
+  fromDate: Date | null;
+  toDate: Date | null;
 }
 
 export const BikesPage: React.FC<Props> = ({
   bikes = [],
   loading = false,
   filters = DefaultBikeFilters,
+  onSearch,
+  setFromDate,
+  setToDate,
+  fromDate,
+  toDate,
 }) => {
 
   const {
@@ -89,27 +118,21 @@ export const BikesPage: React.FC<Props> = ({
     const ratingFilter = selectedRatingFilter.toLowerCase();
 
     if (isAvailableFilter(modelFilter)) {
-      filtered = filter(filtered, item => item.model.toLowerCase(), modelFilter)
+      filtered = filter(filtered, item => item.model.toLowerCase(), modelFilter, equalFilterOperator)
     }
     if (isAvailableFilter(colorFilter)) {
-      filtered = filter(filtered, item => item.color.toLowerCase(), colorFilter)
+      filtered = filter(filtered, item => item.color.toLowerCase(), colorFilter, equalFilterOperator)
     }
     if (isAvailableFilter(locationFilter)) {
-      filtered = filter(filtered, item => item.location.toLowerCase(), locationFilter)
+      filtered = filter(filtered, item => item.location.toLowerCase(), locationFilter, equalFilterOperator)
     }
     if (isAvailableFilter(ratingFilter)) {
-      filtered = filter(filtered, item => item.ratingAverage, parseInt(ratingFilter))
+      filtered = filter(filtered, item => item.ratingAverage, parseInt(ratingFilter), equalOrGreaterFilterOperator)
     }
 
     return filtered;
 
-  }, [
-    bikes,
-    selectedModelFilter,
-    selectedLocationFilter,
-    selectedColorFilter,
-    selectedRatingFilter
-  ]);
+  }, [bikes, selectedModelFilter, selectedLocationFilter, selectedColorFilter, selectedRatingFilter]);
 
   return (
     <>
@@ -118,10 +141,54 @@ export const BikesPage: React.FC<Props> = ({
       <Stack
         alignItems={"center"}
         direction={"row"}
-        divider={<Divider orientation="vertical" flexItem />}
         spacing={2}
         sx={{ mt: 2, mb: 2 }}
       >
+        <Typography variant="h6" sx={{ minWidth: 70 }}>Search</Typography>
+        <Divider orientation="vertical" flexItem />
+        <DatePicker
+          label="From"
+          value={fromDate}
+          onChange={setFromDate}
+          minDate={new Date()}
+          maxDate={toDate || undefined}
+          disablePast
+          InputProps={{
+            readOnly: true,
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <DatePicker
+          label="To"
+          value={toDate}
+          onChange={setToDate}
+          minDate={fromDate || new Date()}
+          disablePast
+          InputProps={{
+            readOnly: true,
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <LoadingButton
+          size="small"
+          variant="contained"
+          onClick={onSearch}
+          loading={loading}
+          loadingPosition="start"
+          startIcon={<SendIcon />}
+        >
+          Search
+        </LoadingButton>
+      </Stack>
+
+      <Stack
+        alignItems={"center"}
+        direction={"row"}
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={2}
+        sx={{ mt: 3, mb: 3 }}
+      >
+        <Typography variant="h6" sx={{ minWidth: 70 }}>Filter</Typography>
         <SelectBox enableAll label="Model" value={selectedModelFilter} onChange={handleChangeModelFilter}>
           {modelFilters.map(filter => (<MenuItem value={filter} key={filter}>{filter}</MenuItem>))}
         </SelectBox>

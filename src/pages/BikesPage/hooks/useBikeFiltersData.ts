@@ -23,24 +23,6 @@ const useBikeFiltersData = (): UseAxiosResultType => {
     },
     getFilters,
   ];
-  // return [
-  //   {
-  //     data : {
-  //       success: true,
-  //       data: {
-  //         filters: {
-  //           models: ["m1", "m2"],
-  //           colors: ["red", "blue"],
-  //           locations: ["location 1", "location 2 - birkenhead"],
-  //           ratings: [1, 2, 3, 4, 5]
-  //         }
-  //       }
-  //     },
-  //     loading : false,
-  //     error : null,
-  //   },
-  //   getFilters,
-  // ];
 }
 
 export default useBikeFiltersData;

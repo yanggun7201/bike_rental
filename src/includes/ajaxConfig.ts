@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getToken } from "./auth";
 import { API_BASE } from "./constants";
+import moment from "moment";
 
 // https://github.com/axios/axios#config-defaults
 axios.defaults.baseURL = API_BASE;
@@ -22,6 +23,12 @@ export const initAxios = ({
 
   // Add a request interceptor
   axios.interceptors.request.use((config) => {
+    config.headers = {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "current-date": moment().format("YYYY-MM-DD"),
+    }
+
     const token = getToken();
     if (token) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

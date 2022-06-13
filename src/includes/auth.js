@@ -1,22 +1,19 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { isNumber, toInteger } from "lodash";
+import { toInteger } from "lodash";
 import { getNowSeconds } from "./numbers";
-import moment from "moment";
 
+const User_KEY = "bike_rental_user";
+const TOKEN_KEY = "bike_rental_token";
 
 export const getToken = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem(TOKEN_KEY);
   if (!token) {
     return null;
   }
 
   const decoded = jwt_decode(token);
-  console.log('decoded', decoded);
-
   const expires_in = toInteger(decoded.exp) || 0;
-  console.log('____expires_in', expires_in);
-  console.log('getNowSeconds()', getNowSeconds());
 
   if (expires_in<getNowSeconds()) {
     logout();
@@ -26,22 +23,15 @@ export const getToken = () => {
   return token;
 }
 
-const setExpiresIn = (expires_in) => {
-  if (isNumber(expires_in)) {
-    const calculatedExpiredIn = getNowSeconds() + toInteger(expires_in);
-    localStorage.setItem("expires_in", calculatedExpiredIn);
-  }
-}
-
 export const setToken = (token) => {
-  localStorage.setItem("token", token ?? "");
+  localStorage.setItem(TOKEN_KEY, token ?? "");
   if (!token) {
     setUserToStorage(null);
   }
 }
 
 export const getUserFromStorage = () => {
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem(User_KEY);
   if (user) {
     return JSON.parse(user);
   }
@@ -50,10 +40,9 @@ export const getUserFromStorage = () => {
 
 export const setUserToStorage = (user) => {
   if (user) {
-    setExpiresIn(user.expires_in);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem(User_KEY, JSON.stringify(user));
   } else {
-    localStorage.setItem("user", user);
+    localStorage.setItem(User_KEY, user);
   }
 }
 
@@ -65,13 +54,6 @@ export const login = (email, password) => {
   return axios.post(
     "/bikerental/login",
     JSON.stringify(data),
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "current-date": moment().format("YYYY-MM-DD"),
-      }
-    },
   )
     .then(result => {
       if (result.status === 200 && result.data) {
@@ -83,15 +65,7 @@ export const login = (email, password) => {
 }
 
 export const logout = () => {
-
   return axios.get(
     "/bikerental/logout",
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "current-date": moment().format("YYYY-MM-DD"),
-      }
-    },
   );
 }
