@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FormControl, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent,
+  FormControl, FormHelperText, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, SxProps,
 } from "@mui/material";
 
 interface Props {
@@ -8,7 +8,10 @@ interface Props {
   label?: string;
   value: string;
   onChange: (event: SelectChangeEvent) => void;
-  enableAll?: boolean
+  enableAll?: boolean;
+  sx?: SxProps;
+  size?: "small" | "medium";
+  error?: string;
 }
 
 export const SelectBox: React.FC<Props> = ({
@@ -18,8 +21,11 @@ export const SelectBox: React.FC<Props> = ({
   value = "",
   children,
   enableAll = false,
+  size = "small",
+  sx,
+  error,
 }) => (
-  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+  <FormControl sx={{ m: 1, minWidth: 120, ...sx }} size={size}>
     {label && (
       <InputLabel id={labelId || label}>{label}</InputLabel>
     )}
@@ -36,5 +42,17 @@ export const SelectBox: React.FC<Props> = ({
       )}
       {children}
     </Select>
+    {error && (
+      <FormHelperText
+        id={labelId || label}
+        error
+        sx={{
+          position: "absolute",
+          bottom: "-24px"
+        }}
+      >
+        {error}
+      </FormHelperText>
+    )}
   </FormControl>
 );

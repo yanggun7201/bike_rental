@@ -1,10 +1,15 @@
+import { Reservation } from "./Reservation";
+import { Rating } from "./Rating";
+
 export interface Bike {
   id: number;
   model: string;
   color: string;
   location: string;
   ratingAverage: number;
-  active: boolean
+  active: boolean;
+  reservations?: Reservation[];
+  ratings?: Rating[];
 }
 
 export type BikeFilters = {

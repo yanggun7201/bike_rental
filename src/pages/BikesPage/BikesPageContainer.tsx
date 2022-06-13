@@ -6,6 +6,7 @@ import { DefaultBikeFilters } from "../../types/Bike";
 import moment from "moment";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
 import { PageTitle } from "../../components/PageTitle";
+import { getErrorMessage } from "../../includes/errorMessage";
 
 export const BikesPageContainer: React.FC = () => {
   const [{ data: filtersData }, getBikeFilters] = useBikeFiltersData();
@@ -61,7 +62,7 @@ export const BikesPageContainer: React.FC = () => {
 
   useEffect(() => {
     if (error) {
-      alert(error);
+      showSnackMessage({ type: "error", title: getErrorMessage(error) });
     }
   }, [error]);
 
@@ -70,10 +71,18 @@ export const BikesPageContainer: React.FC = () => {
   }, [getBikeFilters]);
 
   return (
-    <BikesPage
-      bikes={bikes}
-      loading={loading}
-      filters={filters}
-    />
+    <>
+      <PageTitle>Bikes</PageTitle>
+      <BikesPage
+        bikes={bikes}
+        loading={loading}
+        filters={filters}
+        fromDate={fromDate}
+        toDate={toDate}
+        setFromDate={setFromDate}
+        setToDate={setToDate}
+        onSearch={handleSearch}
+      />
+    </>
   )
 }

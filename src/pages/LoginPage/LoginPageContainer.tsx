@@ -18,18 +18,16 @@ export const LoginPageContainer: React.FC = () => {
 
     login(data.get("email"), data.get("password"))
       .then((result) => {
-        console.log( "setCurrentUserState( user )");
         setCurrentUserState({ ...result.user });
         navigate(-1);
       })
       .catch(error => {
-        console.log('error', error);
         const message = error?.response?.data?.message;
         if (message.email) {
-          showSnackMessage({ type: "error", title: "Sign in error", body: message.email });
+          showSnackMessage({ type: "error", title: "Login error", body: message.email });
         }
         if (typeof (message) === "string") {
-          showSnackMessage({ type: "error", title: "Sign in error", body: message });
+          showSnackMessage({ type: "error", title: "Login error", body: message });
         }
       });
   }, [navigate, setCurrentUserState]);

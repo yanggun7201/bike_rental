@@ -49,12 +49,12 @@ export const Layout: React.FC = ({
         {user && (
           <>
             <Divider />
-            <NavItem icon={<LogoutIcon />} to={"/logout"} onClick={handleLogout}>Sign out</NavItem>
+            <NavItem icon={<LogoutIcon />} to={"/logout"} onClick={handleLogout}>Logout</NavItem>
           </>
         )}
       </SideNav>
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, position: "relative" }}>
         <Toolbar />
         <Box>
           {children}

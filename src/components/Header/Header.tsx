@@ -36,7 +36,7 @@ export const Header: React.FC = ({
             )
             : (
               <MuiLink to={"/login"}>
-                Sign in
+                Log in
               </MuiLink>
             )
           }

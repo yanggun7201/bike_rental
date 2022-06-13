@@ -20,7 +20,7 @@ export const LoginPage: React.FC<Props> = ({
         }}
       >
         <Avatar alt="Profile"><LockIcon /></Avatar>
-        <Typography component="h1" variant="h5">Sign in</Typography>
+        <Typography component="h1" variant="h5">Login</Typography>
         <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -48,7 +48,7 @@ export const LoginPage: React.FC<Props> = ({
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Login
           </Button>
         </Box>
       </Box>

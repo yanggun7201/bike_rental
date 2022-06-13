@@ -9,6 +9,7 @@ import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 import { NotFound } from "./pages/NotFound";
 import { BikesPage } from "./pages/BikesPage";
+import { BikeDetailsPage } from "./pages/BikeDetailsPage";
 
 function App(): ReactElement {
 
@@ -21,8 +22,8 @@ function App(): ReactElement {
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="bikes/:bikeId" element={<BikeDetailsPage />} />
           <Route path="bikes" element={<BikesPage />} />
-          <Route path="bikes/{bikeId}" element={<BikeDetailsPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

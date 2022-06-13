@@ -5,12 +5,10 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { LoadingButton } from "@mui/lab";
 import SendIcon from '@mui/icons-material/Send';
 import { Bike, BikeFilters, DefaultBikeFilters } from "../../types/Bike";
-import { PageTitle } from "../../components/PageTitle";
 import { MuiLink } from "../../components/MuiLink";
 import { SelectBox } from "../../components/SelectBox";
 import useBikeFilter from "./hooks/useBikeFilter";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import moment from "moment";
 
 const columns: GridColDef[] = [
   {
@@ -18,7 +16,7 @@ const columns: GridColDef[] = [
     headerName: 'Model',
     width: 150,
     renderCell: (params: GridRenderCellParams): ReactNode => (
-      <MuiLink to={`/bikerental/bikes/${params.id}`} underline={"hover"}>{params.value}</MuiLink>
+      <MuiLink to={`/bikes/${params.id}`} underline={"hover"}>{params.value}</MuiLink>
     ),
   },
   {
@@ -136,8 +134,6 @@ export const BikesPage: React.FC<Props> = ({
 
   return (
     <>
-      <PageTitle>Bikes</PageTitle>
-
       <Stack
         alignItems={"center"}
         direction={"row"}

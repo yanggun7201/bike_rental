@@ -1,0 +1,1 @@
+export { StyledRating } from "./StyledRating";

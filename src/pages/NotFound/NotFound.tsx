@@ -1,14 +1,10 @@
 import * as React from 'react';
-import {styled} from "@mui/system";
-
-export const Div = styled('div')`
-  display: inline-block;
-`;
+import { Box } from "@mui/material";
 
 export const NotFound: React.FC = () => (
-  <Div>
+  <Box sx={{ display: "inline-block"}}>
     <h1>Not Found</h1>
     <p>The page was not found.</p>
-  </Div>
+  </Box>
 );
 

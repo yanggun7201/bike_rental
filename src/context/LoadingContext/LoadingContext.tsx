@@ -22,8 +22,6 @@ export const LoadingContext = createContext<GlobalLoadingContext>(DEFAULT);
 export const LoadingProvider: React.FC<Props> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log('loading', loading);
-
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
       {children}

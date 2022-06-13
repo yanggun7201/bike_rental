@@ -10,7 +10,6 @@ const useBikesData = (): UseAxiosResultType => {
   );
 
   const getBikes = useCallback((config) => {
-    console.log('config', config);
     return getData({
       url: `/bikerental/bikes?includes=ratings,reservations,historyReservations,reservationWithUsers&${config?.params}`
     });
