@@ -17,7 +17,7 @@ const useAxiosAuth = () => {
           setUserToStorage("");
           setToken("");
           showSnackMessage({ type: "error", title: "Auth Error", body: error.message });
-          navigate("/login");
+          navigate("/signin");
         }
         throw error?.response ?? error;
       }

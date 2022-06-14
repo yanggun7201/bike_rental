@@ -7,21 +7,13 @@ import { LoadingButton } from "@mui/lab";
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
-import { EMPTY_USER, InputUser, User } from "../../../../../types/User";
+import { EMPTY_USER, InputUser, InputUserError, User } from "../../../../../types/User";
 import { UserRole } from "../../../../../types/UserRole";
 import { Actions } from "../../../../../types/Actions";
 import { useSnackbarMessage } from "../../../../../hooks/useSnackbarMessage";
 import { LabelledTextField } from "../../../../../components/LabelledTextField";
 import { SelectBox } from "../../../../../components/SelectBox";
 import { SimpleUL } from "../../../../../components/SimpleUL";
-
-type InputUserError = {
-  email?: string,
-  name?: string,
-  role?: string,
-  password?: string;
-  passwordConfirmation?: string;
-}
 
 const validateUser = (user: InputUser, action: Actions): InputUserError => {
   const errors: InputUserError = {};

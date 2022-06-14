@@ -5,13 +5,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import useAxiosAuth from "./hooks/useAxiosAuth";
 import useUser from "./hooks/useUser";
 import { Layout } from "./pages/Layout";
-import { LoginPage } from "./pages/LoginPage";
+import { SignInPage } from "./pages/SignInPage";
 import { NotFound } from "./pages/NotFound";
 import { BikesPage } from "./pages/BikesPage";
 import { BikeDetailsPage } from "./pages/BikeDetailsPage";
 import { ManagementLayout } from "./pages/ManagementLayout";
 import { ManagementBikesPage } from "./pages/management/ManagementBikesPage";
 import { ManagementUsersPage } from "./pages/management/ManagementUsersPage";
+import { SignUpPage } from "./pages/SignUpPage";
 
 function App(): ReactElement {
   useUser();
@@ -24,7 +25,8 @@ function App(): ReactElement {
           <Route index element={<BikesPage />} />
           <Route path="bikes" element={<BikesPage />} />
           <Route path="bikes/:bikeId" element={<BikeDetailsPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route path="signin" element={<SignInPage />} />
+          <Route path="signup" element={<SignUpPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

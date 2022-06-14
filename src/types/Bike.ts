@@ -35,3 +35,9 @@ export const DefaultBikeFilters = {
   locations: [],
   ratings: [],
 }
+
+export interface InputBikeError {
+  model?: string;
+  color?: string;
+  location?: string;
+}

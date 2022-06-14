@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PeopleIcon from '@mui/icons-material/People';
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
-import { logout, setToken } from "../../includes/auth";
+import { logout } from "../../includes/auth";
 import { currentUserState } from "../../stores/store";
 
 export const ManagementLayout: React.FC = ({
@@ -22,8 +22,8 @@ export const ManagementLayout: React.FC = ({
 
   const handleLogout = useCallback((event) => {
     event.preventDefault();
-    logout().finally(() => {
-      setToken(null);
+    logout()
+      .finally(() => {
       setCurrentUserState(null);
     })
   }, [logout, setCurrentUserState]);

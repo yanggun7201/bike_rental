@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   FormControl,
   FormHelperText,
@@ -9,26 +9,28 @@ import {
   SelectChangeEvent,
   SxProps,
 } from "@mui/material";
+import { NOOP } from "../../includes/constants";
 
 interface Props {
   labelId?: string;
   name?: string;
   label?: string;
   value?: string;
-  onChange: (event: SelectChangeEvent) => void;
+  onChange?: (event: SelectChangeEvent) => void;
   enableAll?: boolean;
   enableNone?: boolean;
   sx?: SxProps;
   size?: "small" | "medium";
   error?: string;
-  fullWidth?: boolean
+  fullWidth?: boolean;
+  unControlled?: boolean;
 }
 
 export const SelectBox: React.FC<Props> = ({
   labelId = "",
   name = "",
   label = "",
-  onChange,
+  onChange = NOOP,
   value = "",
   children,
   enableAll = false,
@@ -37,42 +39,64 @@ export const SelectBox: React.FC<Props> = ({
   sx,
   error,
   fullWidth = false,
-}) => (
-  <FormControl sx={{ mt: 2, mb: 1, minWidth: 120, ...sx }} size={size}>
-    {label && (
-      <InputLabel id={labelId || label}>{label}</InputLabel>
-    )}
-    <Select
-      fullWidth={fullWidth}
-      labelId={labelId || label}
-      id={labelId || label}
-      value={value}
-      name={name}
-      label={label}
-      onChange={onChange}
-      {...label && { input: (<OutlinedInput label={label} />) }}
+  unControlled = false,
+}) => {
+
+  const [localValue, setLocalValue] = useState<string>(value);
+  const handleChange = useCallback((event: SelectChangeEvent) => {
+    if (unControlled) {
+      setLocalValue(event.target.value);
+    }
+    onChange(event);
+  }, [onChange, unControlled]);
+
+  const selectedValue = useMemo(() => {
+    return value || localValue;
+  }, [value, localValue]);
+
+  return (
+    <FormControl
+      sx={{
+        mt: 2,
+        mb: 1,
+        minWidth: 120,
+        ...fullWidth && { width: "100%" },
+        ...sx
+      }}
+      size={size}
     >
-      {enableNone && (
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
+      {label && (
+        <InputLabel id={labelId || label}>{label}</InputLabel>
       )}
-      {enableAll && (
-        <MenuItem value="All">All</MenuItem>
-      )}
-      {children}
-    </Select>
-    {error && (
-      <FormHelperText
+      <Select
+        fullWidth={fullWidth}
+        labelId={labelId || label}
         id={labelId || label}
-        error
-        sx={{
-          position: "absolute",
-          bottom: "-24px"
-        }}
+        value={selectedValue}
+        name={name}
+        label={label}
+        onChange={handleChange}
+        {...label && { input: (<OutlinedInput label={label} />) }}
       >
-        {error}
-      </FormHelperText>
-    )}
-  </FormControl>
-);
+        {enableNone && (
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+        )}
+        {enableAll && (
+          <MenuItem value="All">All</MenuItem>
+        )}
+        {children}
+      </Select>
+      {error && (
+        <FormHelperText
+          id={labelId || label}
+          error
+          sx={{ position: "absolute", bottom: "-24px" }}
+        >
+          {error}
+        </FormHelperText>
+      )}
+    </FormControl>
+  );
+}

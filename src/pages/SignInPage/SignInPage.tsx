@@ -1,13 +1,18 @@
 import React from "react";
-import { Avatar, Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Container, Link, TextField, Typography } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
+import { LoadingButton } from "@mui/lab";
+import LoginIcon from '@mui/icons-material/Login';
+import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  loading?: boolean;
 }
 
-export const LoginPage: React.FC<Props> = ({
-  onSubmit
+export const SignInPage: React.FC<Props> = ({
+  onSubmit,
+  loading,
 }) => {
   return (
     <Container component="main" maxWidth="xs">
@@ -42,14 +47,26 @@ export const LoginPage: React.FC<Props> = ({
             id="password"
             autoComplete="current-password"
           />
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
+            loading={loading}
+            loadingPosition="start"
             sx={{ mt: 3, mb: 2 }}
+            startIcon={<LoginIcon />}
           >
-            Login
-          </Button>
+            Sign in
+          </LoadingButton>
+          <Box>
+            <Link
+              to={"/signup"}
+              underline={"always"}
+              component={RouterLink}
+            >
+              {`Don't have an account? Sign Up`}
+            </Link>
+          </Box>
         </Box>
       </Box>
     </Container>

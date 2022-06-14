@@ -16,7 +16,6 @@ export const getToken = () => {
   const expires_in = toInteger(decoded.exp) || 0;
 
   if (expires_in<getNowSeconds()) {
-    logout();
     return null;
   }
 
@@ -47,13 +46,9 @@ export const setUserToStorage = (user) => {
 }
 
 export const login = (email, password) => {
-  const data = {
-    email: email,
-    password: password,
-  };
   return axios.post(
     "/bikerental/login",
-    JSON.stringify(data),
+    JSON.stringify({ email, password }),
   )
     .then(result => {
       if (result.status === 200 && result.data) {
@@ -64,8 +59,25 @@ export const login = (email, password) => {
     });
 }
 
+export const register = (user) => {
+  const data = {
+    ...user,
+    password_confirmation: user.passwordConfirmation,
+  }
+  return axios.post(
+    "/bikerental/register",
+    JSON.stringify(data),
+  )
+    .then(result => {
+      if (result.status === 200 && result.data) {
+        return result.data.data;
+      }
+      return result.data.data;
+    });
+}
+
 export const logout = () => {
   return axios.get(
     "/bikerental/logout",
-  );
+  ).then(() => setToken(null));
 }

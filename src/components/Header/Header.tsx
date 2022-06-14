@@ -35,7 +35,7 @@ export const Header: React.FC = ({
                 <HeaderAvatar userName={currentUserStateValue.name} />
             )
             : (
-              <Link to={"/login"} color={"inherit"} underline={"hover"} component={RouterLink}>
+              <Link to={"/signin"} color={"inherit"} underline={"hover"} component={RouterLink}>
                 Log in
               </Link>
             )

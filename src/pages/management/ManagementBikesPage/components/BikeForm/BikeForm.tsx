@@ -7,39 +7,28 @@ import CheckIcon from '@mui/icons-material/Check';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import { useSnackbarMessage } from "../../../../../hooks/useSnackbarMessage";
-import { Bike, EMPTY_BIKE } from "../../../../../types/Bike";
+import { Bike, EMPTY_BIKE, InputBikeError } from "../../../../../types/Bike";
 import { Actions } from "../../../../../types/Actions";
 import { CenteredRating } from "../../../../../components/CenteredRating";
 import { ReadOnlyTextField } from "../../../../../components/ReadOnlyTextField";
 import { LabelledTextField } from "../../../../../components/LabelledTextField";
 import { SimpleUL } from "../../../../../components/SimpleUL";
 
-
-type InputBikeError = {
-  email?: string,
-  name?: string,
-  role?: string,
-  password?: string;
-  passwordConfirmation?: string;
-}
-
 const validateBike = (bike: Bike): InputBikeError => {
   const errors: InputBikeError = {};
 
   if (isEmpty(trim(bike.model))) {
-    errors.email = "Model is required";
+    errors.model = "Model is required";
   }
   if (isEmpty(trim(bike.color))) {
-    errors.name = "Color is required";
+    errors.color = "Color is required";
   }
   if (isEmpty(trim(bike.location))) {
-    errors.role = "Location is required";
+    errors.location = "Location is required";
   }
 
   return errors;
 };
-
-
 
 interface Props {
   bike: Bike | null,

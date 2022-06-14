@@ -1,3 +1,6 @@
+import React from "react";
+import { SimpleUL } from "../components/SimpleUL";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getErrorMessage = (error: any) => {
   const errorMessageObject = error?.data?.message;
@@ -6,9 +9,10 @@ export const getErrorMessage = (error: any) => {
     const errorMessages = [];
 
     for (const messageKey in errorMessageObject) {
-      errorMessages.push(errorMessageObject[messageKey][0]);
+      const errorMessageDetails = errorMessageObject[messageKey][0];
+      errorMessages.push(<li key={errorMessageDetails}>{errorMessageDetails}</li>);
     }
-    return errorMessages.join("\n");
+    return <SimpleUL>{errorMessages}</SimpleUL>;
   }
 
   return error?.data?.message || error?.message || error?.statusText || "Unknown Error";

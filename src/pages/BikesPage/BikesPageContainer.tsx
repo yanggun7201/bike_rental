@@ -9,7 +9,7 @@ import { PageTitle } from "../../components/PageTitle";
 
 export const BikesPageContainer: React.FC = () => {
   const [{ data: filtersData }, getBikeFilters] = useBikeFiltersData();
-  const [{ data: bikesData, loading, error }, getBikes] = useBikesData();
+  const [{ data: bikesData, loading }, getBikes] = useBikesData();
   const [fromDate, setFromDate] = useState<Date | null>(new Date());
   const [toDate, setToDate] = useState<Date | null>(null);
   const { showSnackMessage } = useSnackbarMessage();

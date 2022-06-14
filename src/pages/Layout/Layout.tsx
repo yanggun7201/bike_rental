@@ -5,11 +5,11 @@ import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from "@mui/icons-material/Menu";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import { logout } from "../../includes/auth";
+import { UserRole } from "../../types/UserRole";
+import { currentUserState } from "../../stores/store";
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
-import { logout, setToken } from "../../includes/auth";
-import { currentUserState } from "../../stores/store";
-import { UserRole } from "../../types/UserRole";
 
 export const Layout: React.FC = ({
   children
@@ -23,10 +23,11 @@ export const Layout: React.FC = ({
 
   const handleLogout = useCallback((event) => {
     event.preventDefault();
-    logout().finally(() => {
-      setToken(null);
-      setCurrentUserState(null);
-    })
+
+    logout()
+      .finally(() => {
+        setCurrentUserState(null);
+      })
   }, [logout, setCurrentUserState]);
 
   return (
