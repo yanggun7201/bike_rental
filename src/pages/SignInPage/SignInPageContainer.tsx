@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isEmpty, trim } from "lodash";
 import { currentUserState } from "../../stores/store";
-import { InputUserError, SignInInputUser } from "../../types/User";
+import { SignInInputUser, SignInInputUserError } from "../../types/User";
 import { login } from "../../includes/auth";
 import { getErrorMessage } from "../../includes/errorMessage";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
@@ -11,8 +11,8 @@ import { SignInPage } from "./SignInPage";
 import { PageTitle } from "../../components/PageTitle";
 import { SimpleUL } from "../../components/SimpleUL";
 
-const validateUser = (user: SignInInputUser): InputUserError => {
-  const errors: InputUserError = {};
+const validateUser = (user: SignInInputUser): SignInInputUserError => {
+  const errors: SignInInputUserError = {};
 
   if (isEmpty(trim(user.email))) {
     errors.email = "Email is required";
@@ -48,7 +48,7 @@ export const SignInPageContainer: React.FC = () => {
 
     setLoading(true);
 
-    login(data.get("email"), data.get("password"))
+    login(user)
       .then((result) => {
         setCurrentUser({ ...result.user });
         navigate(-1);

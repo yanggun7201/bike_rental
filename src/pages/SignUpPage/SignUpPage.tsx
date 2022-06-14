@@ -1,8 +1,8 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Avatar, Box, Container, Link, MenuItem, Typography } from "@mui/material";
-import LockIcon from '@mui/icons-material/Lock';
 import { LoadingButton } from "@mui/lab";
+import LockIcon from '@mui/icons-material/Lock';
 import LoginIcon from '@mui/icons-material/Login';
 import { SelectBox } from "../../components/SelectBox";
 import { UserRole } from "../../types/UserRole";
@@ -30,15 +30,8 @@ export const SignUpPage: React.FC<Props> = ({
         <Avatar alt="Profile"><LockIcon /></Avatar>
         <Typography component="h1" variant="h5">Login</Typography>
         <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
-          <SignUpTextField
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
+          <SignUpTextField id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
           <SignUpTextField id="name" label="Name" name="name" />
-
           <SelectBox
             label="User Role"
             name="role"
@@ -48,20 +41,12 @@ export const SignUpPage: React.FC<Props> = ({
           >
             {Object.keys(UserRole).map(item => (<MenuItem value={item} key={item}>{item}</MenuItem>))}
           </SelectBox>
-
+          <SignUpTextField name="password" label="Password" type="password" id="password" />
           <SignUpTextField
-            name="password"
-            label="Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <SignUpTextField
-            name="passwordConfirmation"
             label="Password confirmation"
-            type="password"
+            name="passwordConfirmation"
             id="passwordConfirmation"
-            autoComplete="current-password"
           />
           <LoadingButton
             type="submit"

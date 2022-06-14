@@ -4,15 +4,15 @@ import { useRecoilState } from "recoil";
 import { isEmpty, trim } from "lodash";
 import { currentUserState } from "../../stores/store";
 import { register } from "../../includes/auth";
-import { InputUserError, SignUpInputUser } from "../../types/User";
+import { SignUpInputUser, SignUpInputUserError } from "../../types/User";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
 import { getErrorMessage } from "../../includes/errorMessage";
 import { SignUpPage } from "./SignUpPage";
 import { PageTitle } from "../../components/PageTitle";
 import { SimpleUL } from "../../components/SimpleUL";
 
-const validateUser = (user: SignUpInputUser): InputUserError => {
-  const errors: InputUserError = {};
+const validateUser = (user: SignUpInputUser): SignUpInputUserError => {
+  const errors: SignUpInputUserError = {};
 
   if (isEmpty(trim(user.email))) {
     errors.email = "Email is required";

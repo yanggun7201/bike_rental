@@ -2,34 +2,39 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { toInteger } from "lodash";
 import { getNowSeconds } from "./numbers";
+import { SignInInputUser, SignUpInputUser, User } from "../types/User";
 
 const USER_KEY = "bike_rental_user";
 const TOKEN_KEY = "bike_rental_token";
+export type Token = string | null;
+export type TokenDecoded = {
+  exp?: number,
+}
 
-export const getToken = () => {
+export const getToken = (): Token => {
   const token = localStorage.getItem(TOKEN_KEY);
   if (!token) {
     return null;
   }
 
-  const decoded = jwt_decode(token);
-  const expires_in = toInteger(decoded.exp) || 0;
+  const decoded = jwt_decode<TokenDecoded>(token);
+  const expires_in = toInteger(decoded?.exp) || 0;
 
-  if (expires_in<getNowSeconds()) {
+  if (expires_in < getNowSeconds()) {
     return null;
   }
 
   return token;
 }
 
-export const setToken = (token) => {
+export const setToken = (token: Token) => {
   localStorage.setItem(TOKEN_KEY, token ?? "");
   if (!token) {
-    setUserToStorage(null);
+    setUserToStorage("");
   }
 }
 
-export const getUserFromStorage = () => {
+export const getUserFromStorage = (): User | null => {
   const user = localStorage.getItem(USER_KEY);
   if (user) {
     return JSON.parse(user);
@@ -37,7 +42,7 @@ export const getUserFromStorage = () => {
   return null;
 }
 
-export const setUserToStorage = (user) => {
+export const setUserToStorage = (user: User | "") => {
   if (user) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   } else {
@@ -45,10 +50,10 @@ export const setUserToStorage = (user) => {
   }
 }
 
-export const login = (email, password) => {
+export const login = (user: SignInInputUser) => {
   return axios.post(
     "/bikerental/login",
-    JSON.stringify({ email, password }),
+    JSON.stringify(user),
   )
     .then(result => {
       if (result.status === 200 && result.data) {
@@ -59,7 +64,7 @@ export const login = (email, password) => {
     });
 }
 
-export const register = (user) => {
+export const register = (user: SignUpInputUser) => {
   const data = {
     ...user,
     password_confirmation: user.passwordConfirmation,

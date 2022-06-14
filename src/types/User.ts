@@ -18,18 +18,11 @@ export interface InputUser extends User {
   passwordConfirmation?: string;
 }
 
-export interface InputUserError {
-  email?: string;
-  name?: string;
-  role?: string;
-  password?: string;
-  passwordConfirmation?: string;
-}
-
 export interface SignInInputUser {
   email?: string;
   password?: string;
 }
+export type SignInInputUserError = SignInInputUser;
 
 export interface SignUpInputUser extends SignInInputUser {
   name?: string;
@@ -37,6 +30,8 @@ export interface SignUpInputUser extends SignInInputUser {
   passwordConfirmation?: string;
 }
 
+export type InputUserError = SignUpInputUser;
+export type SignUpInputUserError = SignUpInputUser;
 
 export const EMPTY_USER: User = {
   id: -1,
