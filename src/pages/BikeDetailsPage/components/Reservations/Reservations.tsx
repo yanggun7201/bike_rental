@@ -1,10 +1,10 @@
 import React, { ReactNode, useCallback, useMemo } from "react";
-import { Reservation } from "../../../../types/Reservation";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { Box, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import moment from "moment";
-import { MuiLink } from "../../../../components/MuiLink";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { Box, Link, Typography } from "@mui/material";
 import { UseAxiosActionType } from "../../../../types/UseAxios";
+import { Reservation } from "../../../../types/Reservation";
 
 interface Props {
   reservations: Reservation[];
@@ -52,7 +52,9 @@ export const Reservations: React.FC<Props> = ({
         renderCell: (params: GridRenderCellParams): ReactNode => {
           if (params.value) {
             return (
-              <MuiLink
+              <Link
+                component={RouterLink}
+                color={"inherit"}
                 to="/reservation/cancel"
                 underline={"hover"}
                 onClick={(event) => {
@@ -64,7 +66,7 @@ export const Reservations: React.FC<Props> = ({
                 }}
               >
                 Cancel
-              </MuiLink>
+              </Link>
             )
           } else {
             return "";

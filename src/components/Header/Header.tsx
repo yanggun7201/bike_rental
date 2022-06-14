@@ -1,9 +1,9 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { AppBar, Box, Toolbar, } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { AppBar, Box, Link, Toolbar, } from "@mui/material";
 import logo from "../../assets/images/logo.png";
 import { currentUserState } from "../../stores/store";
-import { MuiLink } from "../MuiLink";
 import { HeaderAvatar } from "./HeaderAvatar";
 
 export const Header: React.FC = ({
@@ -25,9 +25,9 @@ export const Header: React.FC = ({
     >
       <Toolbar>
         {children}
-        <MuiLink to={"/"}>
-          <Box component="img" alt="Vector Logo." src={logo} sx={{ maxWidth: 95 }} />
-        </MuiLink>
+        <Link to={"/"} component={RouterLink}>
+          <Box component="img" alt="Toptal Bike Logo" src={logo} sx={{ maxWidth: 95 }} />
+        </Link>
         <Box sx={{ flex: 1 }} />
         <Box>
           {currentUserStateValue
@@ -35,9 +35,9 @@ export const Header: React.FC = ({
                 <HeaderAvatar userName={currentUserStateValue.name} />
             )
             : (
-              <MuiLink to={"/login"}>
+              <Link to={"/login"} color={"inherit"} underline={"hover"} component={RouterLink}>
                 Log in
-              </MuiLink>
+              </Link>
             )
           }
         </Box>

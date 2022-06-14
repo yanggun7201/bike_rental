@@ -1,10 +1,10 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
 import { AxiosPromise } from "axios";
-import { Rating } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Link, Rating } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Bike, EMPTY_BIKE } from "../../../types/Bike";
 import { Actions } from "../../../types/Actions";
-import { MuiLink } from "../../../components/MuiLink";
 import { BikeForm } from "./components/BikeForm";
 import { isEmpty } from "lodash";
 import { BikeReservations } from "./components/BikeReservations";
@@ -74,13 +74,15 @@ export const ManagementBikesPage: React.FC<Props> = ({
         headerName: 'Model',
         width: 150,
         renderCell: (params: GridRenderCellParams): ReactNode => (
-          <MuiLink
+          <Link
             to={`/`}
+            component={RouterLink}
+            color={"inherit"}
             underline={"hover"}
             onClick={(event) => handleSelectBike(event, params.row)}
           >
             {params.value}
-          </MuiLink>
+          </Link>
         ),
       },
       {
@@ -111,13 +113,15 @@ export const ManagementBikesPage: React.FC<Props> = ({
           }
 
           return (
-            <MuiLink
+            <Link
               to={`/`}
+              color={"inherit"}
               underline={"hover"}
+              component={RouterLink}
               onClick={(event) => handleSelectBikeForReservations(event, params.row)}
             >
               View
-            </MuiLink>
+            </Link>
           )
         },
       },

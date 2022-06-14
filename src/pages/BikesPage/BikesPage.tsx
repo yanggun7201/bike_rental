@@ -1,14 +1,14 @@
 import React, { ReactNode, useMemo } from "react";
 import { isEmpty } from "lodash";
-import { Divider, MenuItem, Rating, Stack, TextField, Typography } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Divider, Link, MenuItem, Rating, Stack, TextField, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LoadingButton } from "@mui/lab";
 import SendIcon from '@mui/icons-material/Send';
 import { Bike, BikeFilters, DefaultBikeFilters } from "../../types/Bike";
-import { MuiLink } from "../../components/MuiLink";
 import { SelectBox } from "../../components/SelectBox";
 import useBikeFilter from "./hooks/useBikeFilter";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const columns: GridColDef[] = [
   {
@@ -16,7 +16,14 @@ const columns: GridColDef[] = [
     headerName: 'Model',
     width: 150,
     renderCell: (params: GridRenderCellParams): ReactNode => (
-      <MuiLink to={`/bikes/${params.id}`} underline={"hover"}>{params.value}</MuiLink>
+      <Link
+        to={`/bikes/${params.id}`}
+        color={"inherit"}
+        underline={"hover"}
+        component={RouterLink}
+      >
+        {params.value}
+      </Link>
     ),
   },
   {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { ListItem, ListItemIcon, ListItemText, SvgIconProps, useTheme } from "@mui/material";
-import { MuiLink } from "../MuiLink";
+import { Link as RouterLink } from "react-router-dom";
+import { ListItem, Link, ListItemIcon, ListItemText, SvgIconProps, useTheme } from "@mui/material";
 import { NOOP } from "../../includes/constants";
 
 type Props = {
@@ -22,7 +22,13 @@ export const NavItem: React.FC<Props> = ({
   const theme = useTheme();
 
   return (
-    <MuiLink onClick={onClick} to={to}>
+    <Link
+      onClick={onClick}
+      to={to}
+      component={RouterLink}
+      color={"inherit"}
+      underline={"none"}
+    >
       <ListItem
         sx={{
           "&:hover": {
@@ -35,6 +41,6 @@ export const NavItem: React.FC<Props> = ({
         </ListItemIcon>
         <ListItemText primary={children} />
       </ListItem>
-    </MuiLink>
+    </Link>
   );
 }
