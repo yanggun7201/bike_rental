@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isEmpty, trim } from "lodash";
-import { currentUserState } from "../../stores/store";
+import { currentUserState } from "../../stores/currentUser";
 import { SignInInputUser, SignInInputUserError } from "../../types/User";
 import { login } from "../../includes/auth";
 import { getErrorMessage } from "../../includes/errorMessage";
@@ -30,7 +30,7 @@ export const SignInPageContainer: React.FC = () => {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleLogin = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
@@ -46,17 +46,15 @@ export const SignInPageContainer: React.FC = () => {
       return;
     }
 
-    setLoading(true);
-
-    login(user)
-      .then((result) => {
-        setCurrentUser({ ...result.user });
-        navigate(-1);
-      })
-      .catch(error => {
-        setLoading(false);
-        showSnackMessage({ type: "error", title: "Login error", body: getErrorMessage(error) });
-      });
+    try {
+      setLoading(true);
+      const result = await login(user);
+      setCurrentUser({ ...result.user });
+      navigate(-1);
+    } catch (error) {
+      setLoading(false);
+      showSnackMessage({ type: "error", title: "Login error", body: getErrorMessage(error) });
+    }
   }, [navigate, setCurrentUser]);
 
   useEffect(() => {

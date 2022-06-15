@@ -8,7 +8,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
 import { logout } from "../../includes/auth";
-import { currentUserState } from "../../stores/store";
+import { currentUserState } from "../../stores/currentUser";
 
 export const ManagementLayout: React.FC = ({
   children

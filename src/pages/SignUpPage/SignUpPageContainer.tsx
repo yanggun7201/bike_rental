@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { isEmpty, trim } from "lodash";
-import { currentUserState } from "../../stores/store";
+import { currentUserState } from "../../stores/currentUser";
 import { register } from "../../includes/auth";
 import { SignUpInputUser, SignUpInputUserError } from "../../types/User";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
@@ -55,32 +55,28 @@ export const SignUpPageContainer: React.FC = () => {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleLogin = useCallback((event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const user = mapToUser(event);
     const errors = validateUser(user);
-    console.log('user', user);
     if (!isEmpty(errors)) {
       const errorMessage = Object.values(errors).map(error => (<li key={error}>{error}</li>));
       showSnackMessage({ type: "error", title: "Validation Error", body: <SimpleUL>{errorMessage}</SimpleUL> });
       return;
     }
 
-    setLoading(true);
-
-    register(user)
-      .then((result) => {
-        console.log('result.user', result.user);
-        if (result?.user) {
-          showSnackMessage({ title: "Register success!" });
-        }
+    try {
+      setLoading(true);
+      const result = await register(user);
+      if (result?.user) {
+        showSnackMessage({ title: "Register success!" });
         navigate("/signin", { replace: true });
-      })
-      .catch(error => {
-        setLoading(false);
-        showSnackMessage({ type: "error", title: "Login error", body: getErrorMessage(error) });
-      });
+      }
+    } catch (error) {
+      setLoading(false);
+      showSnackMessage({ type: "error", title: "Login error", body: getErrorMessage(error) });
+    }
   }, [navigate, setCurrentUser]);
 
   useEffect(() => {

@@ -1,32 +1,21 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import useBikesData from "./hooks/useBikesData";
-import { BikesPage } from "./BikesPage";
-import useBikeFiltersData from "./hooks/useBikeFiltersData";
-import { DefaultBikeFilters } from "../../types/Bike";
+import React, { useCallback, useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import moment from "moment";
+import useBikesData from "./hooks/useBikesData";
+import useBikeFiltersData from "./hooks/useBikeFiltersData";
 import { useSnackbarMessage } from "../../hooks/useSnackbarMessage";
+import { DefaultBikeFilters } from "../../types/Bike";
+import { bikesFiltersState, bikesSearchRangeState, bikesState } from "../../stores/bikes";
+import { BikesPage } from "./BikesPage";
 import { PageTitle } from "../../components/PageTitle";
 
 export const BikesPageContainer: React.FC = () => {
   const [{ data: filtersData }, getBikeFilters] = useBikeFiltersData();
   const [{ data: bikesData, loading }, getBikes] = useBikesData();
-  const [fromDate, setFromDate] = useState<Date | null>(new Date());
-  const [toDate, setToDate] = useState<Date | null>(null);
+  const { fromDate, toDate } = useRecoilValue(bikesSearchRangeState)
+  const setBikes = useSetRecoilState(bikesState);
+  const setFilters = useSetRecoilState(bikesFiltersState);
   const { showSnackMessage } = useSnackbarMessage();
-
-  const bikes = useMemo(() => {
-    if (bikesData?.status === "success") {
-      return bikesData.data.bikes;
-    }
-    return [];
-  }, [bikesData]);
-
-  const filters = useMemo(() => {
-    if (filtersData?.status === "success") {
-      return filtersData.data.filters;
-    }
-    return DefaultBikeFilters;
-  }, [filtersData]);
 
   const handleSearch = useCallback(() => {
     if (!fromDate) {
@@ -60,6 +49,14 @@ export const BikesPageContainer: React.FC = () => {
   }, [getBikes, fromDate, toDate]);
 
   useEffect(() => {
+    setFilters(filtersData?.status === "success" ? filtersData.data.filters : DefaultBikeFilters);
+  }, [filtersData]);
+
+  useEffect(() => {
+    setBikes(bikesData?.status === "success" ? bikesData.data.bikes : []);
+  }, [bikesData]);
+
+  useEffect(() => {
     getBikeFilters();
   }, [getBikeFilters]);
 
@@ -67,13 +64,7 @@ export const BikesPageContainer: React.FC = () => {
     <>
       <PageTitle>Bikes</PageTitle>
       <BikesPage
-        bikes={bikes}
         loading={loading}
-        filters={filters}
-        fromDate={fromDate}
-        toDate={toDate}
-        setFromDate={setFromDate}
-        setToDate={setToDate}
         onSearch={handleSearch}
       />
     </>

@@ -36,8 +36,29 @@ export const DefaultBikeFilters = {
   ratings: [],
 }
 
+export type BikeSelectedFilterKey = "model" | "color" | "location" | "rating";
+
+export type BikeSelectedFilters = {
+  model: string,
+  color: string,
+  location: string,
+  rating: string,
+}
+
+export const DefaultSelectedBikeFilters: BikeSelectedFilters = {
+  model: "All",
+  color: "All",
+  location: "All",
+  rating: "All",
+}
+
 export interface InputBikeError {
   model?: string;
   color?: string;
   location?: string;
+}
+
+export interface BikeSearchRanges {
+  fromDate: Date | null;
+  toDate: Date | null;
 }

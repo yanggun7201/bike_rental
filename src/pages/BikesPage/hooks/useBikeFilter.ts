@@ -1,16 +1,27 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { useRecoilState } from "recoil";
 import { SelectChangeEvent } from "@mui/material";
+import { selectedBikesFiltersState } from "../../../stores/bikes";
+import { BikeSelectedFilterKey } from "../../../types/Bike";
 
-const useBikeFilter = <T>(filters: T) => {
+const useBikeFilter = (filterKey: BikeSelectedFilterKey) => {
 
-  const [selectedFilter, setSelectedModel] = useState<string>("All");
+  const [selectedFilters, setSelectedFilters] = useRecoilState(selectedBikesFiltersState);
+
+  const selectedFilter = useMemo(() => {
+    return selectedFilters[filterKey];
+  }, [selectedFilters]);
 
   const handleChangeFilter = useCallback((event: SelectChangeEvent) => {
-    setSelectedModel(event.target.value.toString());
+    setSelectedFilters(previousState => {
+      return {
+        ...previousState,
+        [filterKey]: event.target.value.toString(),
+      }
+    });
   }, []);
 
   return {
-    filters,
     selectedFilter,
     handleChangeFilter
   }

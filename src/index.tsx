@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from 'recoil';
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@mui/material";
@@ -11,7 +12,6 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { BrowserRouter } from "react-router-dom";
 import { SnackbarMessageProvider } from "./context/SnackbarMessageContext";
 import { LoadingProvider } from "./context/LoadingContext";
 

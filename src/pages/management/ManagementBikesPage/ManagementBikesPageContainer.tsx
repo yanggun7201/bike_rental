@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import useBikesData from "./hooks/useBikesData";
+import React, { useCallback, useEffect } from "react";
+import { AxiosPromise } from "axios";
+import { useSetRecoilState } from "recoil";
 import { Bike } from "../../../types/Bike";
+import { managementBikesState } from "../../../stores/managementBikes";
+import useBikesData from "./hooks/useBikesData";
+import useUpdateBike from "./hooks/useUpdateBike";
+import useCreateBike from "./hooks/useCreateBike";
+import useDeleteBike from "./hooks/useDeleteBike";
 import { useSnackbarMessage } from "../../../hooks/useSnackbarMessage";
 import { ManagementBikesPage } from "./ManagementBikesPage";
 import { PageTitle } from "../../../components/PageTitle";
-import useUpdateBike from "./hooks/useUpdateBike";
-import useCreateBike from "./hooks/useCreateBike";
-import { AxiosPromise } from "axios";
-import useDeleteBike from "./hooks/useDeleteBike";
 
 export const ManagementBikesPageContainer: React.FC = () => {
   const [{ data: bikesData, loading }, getBikes] = useBikesData();
@@ -15,16 +17,9 @@ export const ManagementBikesPageContainer: React.FC = () => {
   const [{ data: createBikeData, loading: createBikeLoading }, createBike] = useCreateBike();
   const [{ data: deleteBikeData, loading: deleteBikeLoading }, deleteBike] = useDeleteBike();
   const { showSnackMessage } = useSnackbarMessage();
-
-  const bikes = useMemo(() => {
-    if (bikesData?.status === "success") {
-      return bikesData.data.bikes;
-    }
-    return [];
-  }, [bikesData]);
+  const setBikes = useSetRecoilState(managementBikesState);
 
   const handleUpdateBike = useCallback((bike: Bike, id: number): AxiosPromise => {
-
     const data = {
       model: bike.model,
       location: bike.location,
@@ -47,6 +42,10 @@ export const ManagementBikesPageContainer: React.FC = () => {
   const handleDeleteBike = useCallback((bike: Bike, id: number): AxiosPromise => {
     return deleteBike({ params: { bikeId: id } });
   }, [deleteBike]);
+
+  useEffect(() => {
+    setBikes(bikesData?.status === "success" ? bikesData.data.bikes : []);
+  }, [bikesData]);
 
   useEffect(() => {
     getBikes();
@@ -77,7 +76,6 @@ export const ManagementBikesPageContainer: React.FC = () => {
     <>
       <PageTitle>Bikes - Management</PageTitle>
       <ManagementBikesPage
-        bikes={bikes}
         loading={loading}
         updateBike={handleUpdateBike}
         createBike={handleCreateBike}
@@ -87,5 +85,5 @@ export const ManagementBikesPageContainer: React.FC = () => {
         deleteBikeLoading={deleteBikeLoading}
       />
     </>
-  )
+  );
 }

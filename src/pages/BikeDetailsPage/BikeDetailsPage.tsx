@@ -43,7 +43,7 @@ export const BikeDetailsPage: React.FC<Props> = ({
     setPeriodOfTime(event.target.value);
   }, []);
 
-  const handleReserveBike = useCallback(() => {
+  const handleReserveBike = useCallback(async () => {
     if (!periodOfTime) {
       showSnackMessage({ type: "error", title: "Period of time is required." });
       return;
@@ -54,14 +54,20 @@ export const BikeDetailsPage: React.FC<Props> = ({
     }
 
     const splitPeriodOfTime = periodOfTime.split("~");
-    reserveBike({
-      params: { bikeId: bike.id },
-      data: {
-        reserveDate: moment(reserveDate).format(DATE_FORMAT),
-        fromTime: splitPeriodOfTime[0].trim(),
-        toTime: splitPeriodOfTime[1].trim(),
-      }
-    }).then(() => setPeriodOfTime(null));
+    try {
+      await reserveBike({
+        params: { bikeId: bike.id },
+        data: {
+          reserveDate: moment(reserveDate).format(DATE_FORMAT),
+          fromTime: splitPeriodOfTime[0].trim(),
+          toTime: splitPeriodOfTime[1].trim(),
+        }
+      });
+      setPeriodOfTime(null);
+    } catch (e) {
+      // ignore
+    }
+
   }, [bike, reserveBike, reserveDate, periodOfTime]);
 
   const periodOfTimes = useMemo(() => {

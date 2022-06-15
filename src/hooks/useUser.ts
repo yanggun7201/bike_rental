@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { currentUserState } from "../stores/store";
+import { currentUserState } from "../stores/currentUser";
 import { getUserFromStorage } from "../includes/auth";
 
 const useUser = () => {

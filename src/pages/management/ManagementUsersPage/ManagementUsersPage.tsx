@@ -4,8 +4,9 @@ import { isEmpty } from "lodash";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { useRecoilValue } from "recoil";
+import { filteredManagementUsersState } from "../../../stores/managementUsers";
 import { EMPTY_USER, InputUser, User } from "../../../types/User";
-import { UserRole, UserRoleSearchType } from "../../../types/UserRole";
 import { Actions } from "../../../types/Actions";
 import { UserForm } from "./components/UserForm";
 import { UserActions } from "./components/UserActions";
@@ -13,7 +14,6 @@ import { UserFilters } from "./components/UserFilters";
 import { UserReservations } from "./components/UserReservations";
 
 interface Props {
-  users: User[],
   loading: boolean,
   updateUser: (user: InputUser, id: number) => AxiosPromise;
   deleteUser: (user: InputUser, id: number) => AxiosPromise;
@@ -24,7 +24,6 @@ interface Props {
 }
 
 export const ManagementUsersPage: React.FC<Props> = ({
-  users = [],
   loading = false,
   updateUser,
   updateUserLoading,
@@ -35,10 +34,7 @@ export const ManagementUsersPage: React.FC<Props> = ({
 }) => {
   const [selectedUserForUpdate, setSelectedUserForUpdate] = useState<User | null>(null);
   const [selectedUserForReservations, setSelectedUserForReservations] = useState<User | null>(null);
-  const [userType, setUserType] = useState<UserRoleSearchType>("All");
-  const handleUserTypeChanged = useCallback((event: React.MouseEvent<HTMLElement>, newUserType: UserRoleSearchType) => {
-    setUserType(newUserType);
-  }, []);
+  const filteredUsers = useRecoilValue(filteredManagementUsersState);
 
   const handleCancelForm = useCallback(() => {
     setSelectedUserForUpdate(null);
@@ -126,17 +122,6 @@ export const ManagementUsersPage: React.FC<Props> = ({
     ];
   }, [handleSelectUserForUpdate, handleSelectUserForReservations]);
 
-  const filteredUsers = useMemo(() => {
-    switch (userType) {
-      case UserRole.MANAGER:
-      case UserRole.USER:
-        return users.filter(u => u.role === userType);
-      case "All":
-      default:
-        return users;
-    }
-  }, [users, userType]);
-
   return (
     <>
       {selectedUserForUpdate && (
@@ -158,7 +143,7 @@ export const ManagementUsersPage: React.FC<Props> = ({
       )}
 
       <UserActions onClickCreateUser={handleCreateUserClicked} loading={loading} />
-      <UserFilters onChangeUserType={handleUserTypeChanged} userType={userType} />
+      <UserFilters />
 
       <div style={{ height: 640, width: '100%' }}>
         <DataGrid

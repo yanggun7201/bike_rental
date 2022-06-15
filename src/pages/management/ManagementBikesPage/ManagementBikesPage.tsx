@@ -1,4 +1,6 @@
 import React, { ReactNode, useCallback, useMemo, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isEmpty } from "lodash";
 import { AxiosPromise } from "axios";
 import { Link as RouterLink } from "react-router-dom";
 import { Link, Rating } from "@mui/material";
@@ -6,12 +8,11 @@ import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Bike, EMPTY_BIKE } from "../../../types/Bike";
 import { Actions } from "../../../types/Actions";
 import { BikeForm } from "./components/BikeForm";
-import { isEmpty } from "lodash";
 import { BikeReservations } from "./components/BikeReservations";
 import { BikeActions } from "./components/BikeActions";
+import { managementBikesState } from "../../../stores/managementBikes";
 
 interface Props {
-  bikes: Bike[],
   loading: boolean,
   updateBike: (bike: Bike, id: number) => AxiosPromise;
   deleteBike: (bike: Bike, id: number) => AxiosPromise;
@@ -22,7 +23,6 @@ interface Props {
 }
 
 export const ManagementBikesPage: React.FC<Props> = ({
-  bikes = [],
   loading = false,
   updateBike,
   updateBikeLoading,
@@ -33,6 +33,7 @@ export const ManagementBikesPage: React.FC<Props> = ({
 }) => {
   const [selectedBikeForUpdate, setSelectedBikeForUpdate] = useState<Bike | null>(null);
   const [selectedBikeForReservations, setSelectedBikeForReservations] = useState<Bike | null>(null);
+  const bikes = useRecoilValue(managementBikesState);
 
   const handleCancelForm = useCallback(() => {
     setSelectedBikeForUpdate(null);
@@ -146,7 +147,6 @@ export const ManagementBikesPage: React.FC<Props> = ({
       )}
 
       <BikeActions onClickCreateBike={handleCreateBikeClicked} loading={loading} />
-
 
       <div style={{ height: 640, width: '100%' }}>
         <DataGrid

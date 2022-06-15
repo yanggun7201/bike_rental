@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { Link as RouterLink } from "react-router-dom";
 import { AppBar, Box, Link, Toolbar, } from "@mui/material";
 import logo from "../../assets/images/logo.png";
-import { currentUserState } from "../../stores/store";
+import { currentUserState } from "../../stores/currentUser";
 import { HeaderAvatar } from "./HeaderAvatar";
 
 export const Header: React.FC = ({

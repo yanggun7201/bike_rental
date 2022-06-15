@@ -7,7 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { logout } from "../../includes/auth";
 import { UserRole } from "../../types/UserRole";
-import { currentUserState } from "../../stores/store";
+import { currentUserState } from "../../stores/currentUser";
 import { Header } from "../../components/Header";
 import { NavItem, SideNav } from "../../components/SideNav";
 

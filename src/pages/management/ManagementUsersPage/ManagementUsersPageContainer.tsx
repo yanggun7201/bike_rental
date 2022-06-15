@@ -1,8 +1,10 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect } from "react";
 import { AxiosPromise } from "axios";
-import useUsersData from "./hooks/useUsersData";
+import { useSetRecoilState } from "recoil";
+import { managementUsersState } from "../../../stores/managementUsers";
 import { InputUser, User } from "../../../types/User";
 import { useSnackbarMessage } from "../../../hooks/useSnackbarMessage";
+import useUsersData from "./hooks/useUsersData";
 import { ManagementUsersPage } from "./ManagementUsersPage";
 import { PageTitle } from "../../../components/PageTitle";
 import useUpdateUser from "./hooks/useUpdateUser";
@@ -14,17 +16,10 @@ export const ManagementUsersPageContainer: React.FC = () => {
   const [{ data: updateUserData, loading: updateUserLoading }, updateUser] = useUpdateUser();
   const [{ data: createUserData, loading: createUserLoading }, createUser] = useCreateUser();
   const [{ data: deleteUserData, loading: deleteUserLoading }, deleteUser] = useDeleteUser();
+  const setUsers = useSetRecoilState(managementUsersState);
   const { showSnackMessage } = useSnackbarMessage();
 
-  const users = useMemo(() => {
-    if (usersData?.status === "success") {
-      return usersData.data.users;
-    }
-    return [];
-  }, [usersData]);
-
   const handleUpdateUser = useCallback((user: InputUser, id: number): AxiosPromise => {
-
     const data = {
       name: user.name,
       email: user.email,
@@ -49,6 +44,10 @@ export const ManagementUsersPageContainer: React.FC = () => {
   const handleDeleteUser = useCallback((user: User, id: number): AxiosPromise => {
     return deleteUser({ params: { userId: id } });
   }, [deleteUser]);
+
+  useEffect(() => {
+    setUsers(usersData?.status === "success" ? usersData.data.users : []);
+  }, [usersData]);
 
   useEffect(() => {
     getUsers();
@@ -79,7 +78,6 @@ export const ManagementUsersPageContainer: React.FC = () => {
     <>
       <PageTitle>Users - Management</PageTitle>
       <ManagementUsersPage
-        users={users}
         loading={loading}
         updateUser={handleUpdateUser}
         createUser={handleCreateUser}
