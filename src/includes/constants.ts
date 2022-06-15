@@ -1,4 +1,4 @@
-export const API_BASE = "http://localhost:3000/api";
+export const API_BASE = "http://northshore.fun/api";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const NOOP = () => {

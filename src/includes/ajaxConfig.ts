@@ -26,7 +26,7 @@ export const initAxios = ({
     config.headers = {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "current-date": moment().format("YYYY-MM-DD"),
+      "X-Current-Date": moment().format("YYYY-MM-DD"),
     }
 
     const token = getToken();
