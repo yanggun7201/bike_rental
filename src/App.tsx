@@ -32,8 +32,8 @@ function App(): ReactElement {
 
         <Route path="/admin" element={<ManagementLayout />}>
           <Route index element={<ManagementBikesPage />} />
-          <Route path={"bikes"} element={<ManagementBikesPage />} />
-          <Route path={"users"} element={<ManagementUsersPage />} />
+          <Route path="bikes" element={<ManagementBikesPage />} />
+          <Route path="users" element={<ManagementUsersPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

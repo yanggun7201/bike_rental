@@ -13,11 +13,13 @@ const useAxiosAuth = () => {
     initAxios({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       errorHandler: (error: any) => {
-        if (error?.response?.status === 401) {
+
+        if (error?.status === 401 || error?.response.status === 401) {
           setUserToStorage("");
           setToken("");
           showSnackMessage({ type: "error", title: "Auth Error", body: error.message });
           navigate("/signin");
+          return;
         }
         throw error?.response ?? error;
       }
